@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"reflect"
+	"strings"
 )
 
 var (
@@ -33,6 +34,30 @@ func Contains(xs interface{}, x interface{}) bool {
 			if reflect.DeepEqual(x, slice.Index(i).Interface()) {
 				return true
 			}
+		}
+	}
+
+	return false
+}
+
+// HasPrefix returns true if and only if strings.HasPrefix(s, px) returns true for
+// at least one px in prefixes.
+func HasPrefix(s string, prefixes []string) bool {
+	for _, px := range prefixes {
+		if strings.HasPrefix(s, px) {
+			return true
+		}
+	}
+
+	return false
+}
+
+// HasSuffix returns true if and only if strings.HasSuffix(s, sx) returns true for
+// at least one sx in suffixes.
+func HasSuffix(s string, suffixes []string) bool {
+	for _, sx := range suffixes {
+		if strings.HasSuffix(s, sx) {
+			return true
 		}
 	}
 

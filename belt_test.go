@@ -91,12 +91,10 @@ func BenchmarkContains1000(b *testing.B)  { benchmarkContains(1000, b) }
 func BenchmarkContains10000(b *testing.B) { benchmarkContains(10000, b) }
 
 func ExampleContains() {
-	var cakes = []string{"Tiramisu", "Apple Crumble", "Blueberry Pie"}
-
-	if belt.Contains(cakes, "Tiramisu") {
-		fmt.Println("Tiramisu is a cake")
+	if belt.Contains(cakes, "Apple Pie") {
+		fmt.Println("Apple Pie is a cake")
 	} else {
-		fmt.Println("Tiramisu is *not* a cake")
+		fmt.Println("Apple Pie is *not* a cake")
 	}
 
 	if belt.Contains(cakes, "Ice Cream") {
@@ -105,6 +103,103 @@ func ExampleContains() {
 		fmt.Println("Ice Cream is *not* a cake")
 	}
 	// Output:
-	// Tiramisu is a cake
+	// Apple Pie is a cake
 	// Ice Cream is *not* a cake
 }
+
+func TestHasPrefixNilSlice(t *testing.T) {
+	assert.False(t, belt.HasPrefix("Apple Pie", nil))
+}
+
+func TestHasPrefixEmptySlice(t *testing.T) {
+	assert.False(t, belt.HasPrefix("Apple Pie", []string{}))
+}
+
+func TestHasPrefixPositiveFirst(t *testing.T) {
+	assert.True(t, belt.HasPrefix("Apple Pie", cakeFruits))
+}
+
+func TestHasPrefixPositiveMiddle(t *testing.T) {
+	assert.True(t, belt.HasPrefix("Blueberry Pie", cakeFruits))
+}
+
+func TestHasPrefixPositiveLast(t *testing.T) {
+	assert.True(t, belt.HasPrefix("Peach Cobbler", cakeFruits))
+}
+
+func TestHasPrefixPositiveSingle(t *testing.T) {
+	assert.True(t, belt.HasPrefix("Peach Cobbler", []string{"Peach"}))
+}
+
+func TestHasPrefixNegative(t *testing.T) {
+	assert.False(t, belt.HasPrefix("Ice Cream", cakeFruits))
+}
+
+func ExampleHasPrefix() {
+	if belt.HasPrefix("Apple Pie", cakeFruits) {
+		fmt.Println("Apples are a fruit")
+	} else {
+		fmt.Println("Apples are not fruit")
+	}
+
+	if belt.HasPrefix("Ice Cream", cakeFruits) {
+		fmt.Println("Ice is a fruit")
+	} else {
+		fmt.Println("Ice is *not* a fruit")
+	}
+	// Output:
+	// Apples are a fruit
+	// Ice is *not* a fruit
+}
+
+func TestHasSuffixNilSlice(t *testing.T) {
+	assert.False(t, belt.HasSuffix("Apple Pie", nil))
+}
+
+func TestHasSuffixEmptySlice(t *testing.T) {
+	assert.False(t, belt.HasSuffix("Apple Pie", []string{}))
+}
+
+func TestHasSuffixPositiveFirst(t *testing.T) {
+	assert.True(t, belt.HasSuffix("Apple Pie", cakeStyles))
+}
+
+func TestHasSuffixPositiveMiddle(t *testing.T) {
+	assert.True(t, belt.HasSuffix("Apple Crumble", cakeStyles))
+}
+
+func TestHasSuffixPositiveLast(t *testing.T) {
+	assert.True(t, belt.HasSuffix("Peach Cobbler", cakeStyles))
+}
+
+func TestHasSuffixPositiveSingle(t *testing.T) {
+	assert.True(t, belt.HasSuffix("Peach Cobbler", []string{"Cobbler"}))
+}
+
+func TestHasSuffixNegative(t *testing.T) {
+	assert.False(t, belt.HasSuffix("Ice Cream", cakeStyles))
+}
+
+func ExampleHasSuffix() {
+
+	if belt.HasSuffix("Apple Pie", cakeStyles) {
+		fmt.Println("Apple Pie is a cake")
+	} else {
+		fmt.Println("Apple Pie is *not* a cake")
+	}
+
+	if belt.HasSuffix("Ice Cream", cakeStyles) {
+		fmt.Println("Ice Cream is a cake")
+	} else {
+		fmt.Println("Ice Cream is *not* a cake")
+	}
+	// Output:
+	// Apple Pie is a cake
+	// Ice Cream is *not* a cake
+}
+
+var (
+	cakes      = []string{"Apple Pie", "Apple Crumble", "Peach Cobbler"}
+	cakeStyles = []string{"Pie", "Crumble", "Cobbler"}
+	cakeFruits = []string{"Apple", "Blueberry", "Peach"}
+)
